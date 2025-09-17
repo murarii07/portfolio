@@ -155,7 +155,7 @@ const HomePage: React.FC = () => {
         </div>
 
         <div className="relative z-10 text-center max-w-4xl mx-auto mt-6">
-          <div className="mb-6">
+          <div className="mb-6 mt-12">
             <div className="w-32 h-32 mx-auto mb-8 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 p-1">
               <div className="w-full h-full rounded-full bg-black flex items-center justify-center text-4xl font-bold text-white">
                 AJ
