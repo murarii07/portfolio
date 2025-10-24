@@ -36,74 +36,85 @@ const HomePage: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  const skills: Skill[] = [
-    { name: 'Next.js', icon: Code, color: 'from-blue-400 to-blue-600', level: 'Advanced' },
-    { name: 'React', icon: Code, color: 'from-cyan-400 to-cyan-600', level: 'Proficient' },
-    { name: 'Python', icon: Code, color: 'from-yellow-400 to-yellow-600', level: 'Proficient' },
-    { name: 'Azure Cloud', icon: Cloud, color: 'from-blue-500 to-blue-700', level: 'Advanced' },
-    { name: 'Node.js', icon: Code, color: 'from-green-400 to-green-600', level: 'Native' },
-    { name: 'MongoDB', icon: Database, color: 'from-green-500 to-green-700', level: 'Proficient' },
-    { name: 'Docker', icon: Code, color: 'from-blue-400 to-blue-600', level: 'Proficient' }
-  ];
+ const skills: Skill[] = [
+  { name: 'Next.js', icon: Code, color: 'from-blue-400 to-blue-600', level: 'Advanced' },
+  { name: 'React', icon: Code, color: 'from-cyan-400 to-cyan-600', level: 'Advanced' },
+  { name: 'Python', icon: Code, color: 'from-yellow-400 to-yellow-600', level: 'Proficient' },
+  { name: 'Azure Cloud', icon: Cloud, color: 'from-blue-500 to-blue-700', level: 'Advanced' },
+  { name: 'Node.js', icon: Code, color: 'from-green-400 to-green-600', level: 'Proficient' },
+  { name: 'MongoDB', icon: Database, color: 'from-green-500 to-green-700', level: 'Proficient' },
+  { name: 'Docker', icon: Code, color: 'from-blue-400 to-blue-600', level: 'Proficient' },
+  { name: 'TypeScript', icon: Code, color: 'from-indigo-400 to-indigo-600', level: 'Intermediate' },
+  { name: 'Django', icon: Code, color: 'from-emerald-400 to-emerald-600', level: 'Intermediate' },
+  { name: 'SQL (PostgreSQL)', icon: Database, color: 'from-purple-400 to-purple-600', level: 'Proficient' },
+  { name: 'Git & GitHub', icon: Code, color: 'from-gray-500 to-gray-700', level: 'Proficient' },
+  { name: 'NestJS', icon: Code, color: 'from-pink-400 to-pink-600', level: 'Intermediate' }
+];
 
-  const projects: Project[] = [
-    {
-      title: 'Excel-to-Form Conversion',
-      description: 'A comprehensive web-based application that converts Excel data into dynamic, interactive web forms, revolutionizing data collection processes with enhanced efficiency and security.',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
-      tags: ['Next.js', 'Azure', 'Vercel', 'Authentication', 'Blob Storage'],
-      githubUrl: 'https://github.com/murarii07/excel-to-form',
-      features: [
-        'Dynamic form generation from Excel sheets',
-        'Secure user authentication system',
-        'Data encryption for privacy protection',
-        'Azure Blob Storage integration',
-        'Frontend deployed on Vercel, backend on Azure'
-      ],
-      liveUrl:"https://excel-to-form.vercel.app/"
-    },
-    {
-      title: 'Vocal Separator',
-      description: 'An intelligent web application leveraging Music.ai API to accurately separate vocals from music tracks, providing professional-grade audio processing for music producers and audio enthusiasts.',
-      image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop',
-      tags: ['Python', 'Music.ai API', 'Audio Processing', 'Web App'],
-      githubUrl: 'https://github.com/murarii07/Vocal_Separation_From_Music',
-      features: [
-        'High-quality vocal extraction using AI',
-        'Intuitive file upload interface',
-        'Professional-grade audio output',
-        'Optimized processing pipeline',
-        'Support for multiple audio formats'
-      ]
-    },
-    {
-      title: 'Text-to-Image Generator',
-      description: 'A creative AI-powered application that generates stunning images from text prompts using ClipDrop.ai API, hosted on Azure with Docker for scalability and seamless deployment.',
-      image: 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=600&h=400&fit=crop',
-      tags: ['Python', 'ClipDrop.ai API', 'Azure', 'Docker', 'AI'],
-      githubUrl: 'https://github.com/murarii07/Text-to-Image',
-      features: [
-        'AI-powered image generation from text',
-        'Docker containerization for scalability',
-        'Azure cloud deployment',
-        'User-friendly interface design',
-        'High-resolution image output'
-      ]
-    }
-  ];
+const projects: Project[] = [
+  {
+    title: 'Excel-to-Form Conversion',
+    description: 'Web application that converts Excel data into dynamic, interactive web forms — improving data collection efficiency and automation.',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
+    tags: ['Next.js', 'Azure', 'Vercel', 'Blob Storage', 'Automation'],
+    githubUrl: 'https://github.com/murarii07/excel-to-form',
+    features: [
+      'Dynamic form generation from Excel sheets',
+      'Azure Blob Storage integration',
+      'Secure backend APIs',
+      'Deployed frontend on Vercel, backend on Azure',
+      'Improved data accuracy and accessibility'
+    ],
+    liveUrl: 'https://excel-to-form.vercel.app/'
+  },
+  {
+    title: 'Vocal Separator',
+    description: 'AI-driven web app using Music.ai API to separate vocals from music tracks with high precision for audio producers and enthusiasts.',
+    image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop',
+    tags: ['Python', 'Music.ai API', 'Azure', 'Audio Processing'],
+    githubUrl: 'https://github.com/murarii07/Vocal_Separation_From_Music',
+    features: [
+      'Accurate AI-based vocal extraction',
+      'File upload and download interface',
+      'Optimized processing pipeline',
+      'Azure cloud hosting for scalability',
+      'Multi-format audio support'
+    ]
+  },
+  {
+    title: 'Fake News Detection Chrome Extension',
+    description: 'Browser extension that evaluates the credibility of online news articles using a machine learning API and provides instant feedback indicators.',
+    image: 'https://images.unsplash.com/photo-1526378722478-ccf3dd4b362b?w=600&h=400&fit=crop',
+    tags: ['React', 'Machine Learning API', 'Chrome Extension', 'AI', 'Web Security'],
+    githubUrl: 'https://github.com/murarii07/chromeExtension',
+    features: [
+      'Real-time credibility scoring of news content',
+      'Intuitive color-coded indicator system',
+      'Lightweight and fast Chrome extension architecture',
+      'Seamless ML API integration',
+      'Enhances digital media literacy'
+    ]
+  }
+];
 
-  const achievements: Achievement[] = [
-    {
-      title: 'Smart India Hackathon 2024',
-      description: 'Participated in India\'s premier innovation challenge, demonstrating exceptional problem-solving skills and collaborative teamwork in developing cutting-edge solutions.',
-      year: '2024'
-    },
-    {
-      title: 'Microsoft Azure Fundamentals (AZ-900)',
-      description: 'Certified in Microsoft Azure fundamentals, demonstrating comprehensive understanding of cloud services, security, and Azure architecture.',
-      year: '2024'
-    }
-  ];
+const achievements: Achievement[] = [
+  {
+    title: 'Inter-College Hackathon Finalist 2025',
+    description: 'Developed a prototype browser extension for fake news detection using machine learning APIs, achieving finalist recognition.',
+    year: '2025'
+  },
+  {
+    title: 'Smart India Hackathon 2024',
+    description: 'Participated in India’s national innovation challenge, contributing to collaborative problem-solving and creative tech solutions.',
+    year: '2024'
+  },
+  {
+    title: 'Microsoft Azure Fundamentals (AZ-900)',
+    description: 'Certified in Azure fundamentals, with a solid grasp of cloud architecture, services, and deployment workflows.',
+    year: '2024'
+  }
+];
+
 
   const handleNavClick = (href: string): void => {
     const element = document.querySelector(href);
@@ -144,11 +155,11 @@ const HomePage: React.FC = () => {
       <section id="home" className="relative min-h-screen flex items-center justify-center px-6">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div 
+          <div
             className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-pulse"
             style={{ transform: `translateY(${scrollY * 0.5}px)` }}
           />
-          <div 
+          <div
             className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-400/20 rounded-full blur-3xl animate-pulse delay-1000"
             style={{ transform: `translateY(${scrollY * -0.3}px)` }}
           />
@@ -162,60 +173,60 @@ const HomePage: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-blue-300 to-cyan-400 bg-clip-text text-transparent animate-pulse">
             Abhay Jaiswal
           </h1>
-          
+
           <div className="text-xl md:text-2xl mb-8 text-gray-300">
             <span className="inline-block">Aspiring Software Developer & </span>
             <span className="inline-block bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent font-semibold">
               Cloud Enthusiast
             </span>
           </div>
-          
+
           <p className="text-lg md:text-xl mb-12 text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Passionate software developer with expertise in Python, Azure, and modern web technologies. 
-            Building innovative solutions that bridge creativity with cutting-edge technology, 
+            Passionate software developer with expertise in Python, Azure, and modern web technologies.
+            Building innovative solutions that bridge creativity with cutting-edge technology,
             specializing in cloud computing and full-stack development.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <button 
+            <button
               onClick={() => handleNavClick('#projects')}
               className="group px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-full font-semibold hover:scale-105 transform transition-all duration-300 shadow-2xl shadow-blue-500/20"
             >
               <span className="flex items-center gap-2">
-                View My Projects 
+                View My Projects
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
-            <button 
+            <button
               onClick={() => window.open('mailto:abhayaj07@gmail.com', '_blank')}
               className="px-8 py-4 border-2 border-white/20 rounded-full font-semibold hover:bg-white/10 hover:scale-105 transform transition-all duration-300 backdrop-blur-sm"
             >
               Get In Touch
             </button>
           </div>
-          
+
           <div className="flex justify-center space-x-6">
-            <a 
-              href="https://github.com/murarii07" 
+            <a
+              href="https://github.com/murarii07"
               target="_blank"
               rel="noopener noreferrer"
               className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 hover:scale-110 transform transition-all duration-300 backdrop-blur-sm"
             >
               <Github className="w-6 h-6" />
             </a>
-            <a 
-              href="https://www.linkedin.com/in/abhay-j-6b6ab325a/" 
+            <a
+              href="https://www.linkedin.com/in/abhay-j-6b6ab325a/"
               target="_blank"
               rel="noopener noreferrer"
               className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 hover:scale-110 transform transition-all duration-300 backdrop-blur-sm"
             >
               <Linkedin className="w-6 h-6" />
             </a>
-            <a 
+            <a
               href="mailto:abhayaj07@gmail.com"
               className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 hover:scale-110 transform transition-all duration-300 backdrop-blur-sm"
             >
@@ -233,20 +244,19 @@ const HomePage: React.FC = () => {
       {/* About Section */}
       <section id="about" className="py-20 px-6 relative">
         <div className="max-w-7xl mx-auto">
-          <div 
+          <div
             id="about-title"
             data-animate
-            className={`text-center mb-16 transition-all duration-1000 ${
-              isVisible['about-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
+            className={`text-center mb-16 transition-all duration-1000 ${isVisible['about-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
               About Me
             </h2>
             <div className="max-w-4xl mx-auto">
               <p className="text-xl text-gray-400 mb-8 leading-relaxed">
-                I'm currently pursuing my Bachelor of Science in Information Technology at Mulund College of Commerce, 
-                maintaining a strong GPA of 8.0. My journey in technology is driven by curiosity and a passion for 
+                I'm currently pursuing my Bachelor of Science in Information Technology at Mulund College of Commerce,
+                maintaining a strong GPA of 8.0. My journey in technology is driven by curiosity and a passion for
                 solving real-world problems through innovative software solutions.
               </p>
               <div className="grid md:grid-cols-2 gap-8 text-left">
@@ -278,12 +288,11 @@ const HomePage: React.FC = () => {
       {/* Skills Section */}
       <section id="skills" className="py-20 px-6 relative">
         <div className="max-w-7xl mx-auto">
-          <div 
+          <div
             id="skills-title"
             data-animate
-            className={`text-center mb-16 transition-all duration-1000 ${
-              isVisible['skills-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
+            className={`text-center mb-16 transition-all duration-1000 ${isVisible['skills-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
               Technical Skills
@@ -297,8 +306,8 @@ const HomePage: React.FC = () => {
             {skills.map((skill: Skill, index: number) => {
               const Icon = skill.icon;
               return (
-                <SkillCard skill={skill} index={index} isVisible={isVisible}Icon={Icon} key={skill.name} />
-            
+                <SkillCard skill={skill} index={index} isVisible={isVisible} Icon={Icon} key={skill.name} />
+
               );
             })}
           </div>
@@ -308,13 +317,12 @@ const HomePage: React.FC = () => {
       {/* Projects Section */}
       <section id="projects" className="py-20 px-6 relative">
         <div className="max-w-7xl mx-auto">
-          
-          <div 
+
+          <div
             id="projects-title"
             data-animate
-            className={`text-center mb-16 transition-all duration-1000 ${
-              isVisible['projects-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
+            className={`text-center mb-16 transition-all duration-1000 ${isVisible['projects-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
               Featured Projects
@@ -327,7 +335,7 @@ const HomePage: React.FC = () => {
           <div className="space-y-12">
             {projects.map((project: Project, index: number) => (
               <Card isVisible={isVisible} project={project} index={index} key={project.title} />
-          
+
             ))}
           </div>
         </div>
@@ -336,12 +344,11 @@ const HomePage: React.FC = () => {
       {/* Achievements Section */}
       <section id="achievements" className="py-20 px-6 relative">
         <div className="max-w-7xl mx-auto">
-          <div 
+          <div
             id="achievements-title"
             data-animate
-            className={`text-center mb-16 transition-all duration-1000 ${
-              isVisible['achievements-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
+            className={`text-center mb-16 transition-all duration-1000 ${isVisible['achievements-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
               Achievements & Certifications
@@ -357,9 +364,8 @@ const HomePage: React.FC = () => {
                 key={achievement.title}
                 id={`achievement-${index}`}
                 data-animate
-                className={`group p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-700 hover:scale-105 ${
-                  isVisible[`achievement-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                }`}
+                className={`group p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-700 hover:scale-105 ${isVisible[`achievement-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                  }`}
                 style={{ transitionDelay: `${index * 200}ms` }}
               >
                 <div className="flex items-start gap-4">
@@ -384,21 +390,20 @@ const HomePage: React.FC = () => {
       {/* Contact Section */}
       <section id="contact" className="py-20 px-6 relative">
         <div className="max-w-4xl mx-auto text-center">
-          <div 
+          <div
             id="contact-section"
             data-animate
-            className={`transition-all duration-1000 ${
-              isVisible['contact-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
+            className={`transition-all duration-1000 ${isVisible['contact-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
               Let's Connect
             </h2>
             <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-              I'm always excited to collaborate on innovative projects and explore new opportunities. 
+              I'm always excited to collaborate on innovative projects and explore new opportunities.
               Let's build something amazing together!
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <a
                 href="mailto:abhayaj07@gmail.com"
