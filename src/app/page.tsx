@@ -1,11 +1,25 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, Github, Linkedin, Mail, Code, ArrowRight, Cloud, Database } from 'lucide-react';
+import { ChevronDown, Github, Linkedin, Mail, Code, ArrowRight, Cloud, Database, Server, GitBranch } from 'lucide-react';
 import Card from './Components/Card';
 import { Achievement, Project, Skill, VisibilityState } from './state.types';
 import SkillCard from './Components/Skills';
-// Type definitions
 
+// Local type for the new Experience section (keeps state.types.ts untouched)
+interface Experience {
+  role: string;
+  company: string;
+  period: string;
+  note?: string;
+  points: string[];
+  tags: string[];
+}
+
+const GITHUB_URL = 'https://github.com/murarii07';
+// NOTE: this matches the LinkedIn URL on your profile. Your old portfolio used a different one,
+// so open this link once and confirm it is the profile you want to share.
+const LINKEDIN_URL = 'https://www.linkedin.com/in/abhayjaiswal007';
+const EMAIL = 'abhayaj07@gmail.com';
 
 const HomePage: React.FC = () => {
   const [scrollY, setScrollY] = useState<number>(0);
@@ -36,101 +50,136 @@ const HomePage: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
- const skills: Skill[] = [
-  { name: 'Next.js', icon: Code, color: 'from-blue-400 to-blue-600', level: 'Advanced' },
-  { name: 'React', icon: Code, color: 'from-cyan-400 to-cyan-600', level: 'Advanced' },
-  { name: 'Python', icon: Code, color: 'from-yellow-400 to-yellow-600', level: 'Proficient' },
-  { name: 'Azure Cloud', icon: Cloud, color: 'from-blue-500 to-blue-700', level: 'Advanced' },
-  { name: 'Node.js', icon: Code, color: 'from-green-400 to-green-600', level: 'Proficient' },
-  { name: 'MongoDB', icon: Database, color: 'from-green-500 to-green-700', level: 'Proficient' },
-  { name: 'Docker', icon: Code, color: 'from-blue-400 to-blue-600', level: 'Proficient' },
-  { name: 'TypeScript', icon: Code, color: 'from-indigo-400 to-indigo-600', level: 'Intermediate' },
-  { name: 'Django', icon: Code, color: 'from-emerald-400 to-emerald-600', level: 'Intermediate' },
-  { name: 'SQL (PostgreSQL)', icon: Database, color: 'from-purple-400 to-purple-600', level: 'Proficient' },
-  { name: 'Git & GitHub', icon: Code, color: 'from-gray-500 to-gray-700', level: 'Proficient' },
-  { name: 'NestJS', icon: Code, color: 'from-pink-400 to-pink-600', level: 'Intermediate' }
-];
+  // Skill levels are self-ratings. Adjust them to what you can confidently defend in an interview.
+  const skills: Skill[] = [
+    { name: 'Python', icon: Code, color: 'from-yellow-400 to-yellow-600', level: 'Proficient' },
+    { name: 'FastAPI', icon: Server, color: 'from-teal-400 to-teal-600', level: 'Proficient' },
+    { name: 'Django', icon: Server, color: 'from-emerald-400 to-emerald-600', level: 'Proficient' },
+    { name: 'PostgreSQL (Multi-tenant Design)', icon: Database, color: 'from-purple-400 to-purple-600', level: 'Proficient' },
+    { name: 'GraphQL & REST APIs', icon: Server, color: 'from-pink-400 to-pink-600', level: 'Proficient' },
+    { name: 'AWS', icon: Cloud, color: 'from-orange-400 to-orange-600', level: 'Proficient' },
+    { name: 'Docker', icon: Code, color: 'from-blue-400 to-blue-600', level: 'Proficient' },
+    { name: 'CI/CD (GitHub Actions)', icon: GitBranch, color: 'from-gray-400 to-gray-600', level: 'Proficient' },
+    { name: 'Azure Cloud', icon: Cloud, color: 'from-blue-500 to-blue-700', level: 'Intermediate' },
+    { name: 'Next.js', icon: Code, color: 'from-slate-400 to-slate-600', level: 'Proficient' },
+    { name: 'React', icon: Code, color: 'from-cyan-400 to-cyan-600', level: 'Proficient' },
+    { name: 'TypeScript', icon: Code, color: 'from-indigo-400 to-indigo-600', level: 'Intermediate' }
+  ];
 
-const projects: Project[] = [
-  {
-    title: 'Excel-to-Form Conversion',
-    description: 'Web application that converts Excel data into dynamic, interactive web forms — improving data collection efficiency and automation.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
-    tags: ['Next.js', 'Azure', 'Vercel', 'Blob Storage', 'Automation'],
-    githubUrl: 'https://github.com/murarii07/excel-to-form',
-    features: [
-      'Dynamic form generation from Excel sheets',
-      'Azure Blob Storage integration',
-      'Secure backend APIs',
-      'Deployed frontend on Vercel, backend on Azure',
-      'Improved data accuracy and accessibility'
-    ],
-    liveUrl: 'https://excel-to-form.vercel.app/'
-  },
-  {
-    title: 'Vocal Separator',
-    description: 'AI-driven web app using Music.ai API to separate vocals from music tracks with high precision for audio producers and enthusiasts.',
-    image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop',
-    tags: ['Python', 'Music.ai API', 'Azure', 'Audio Processing'],
-    githubUrl: 'https://github.com/murarii07/Vocal_Separation_From_Music',
-    features: [
-      'Accurate AI-based vocal extraction',
-      'File upload and download interface',
-      'Optimized processing pipeline',
-      'Azure cloud hosting for scalability',
-      'Multi-format audio support'
-    ]
-  },
-  {
-    title: 'Fake News Detection Chrome Extension',
-    description: 'Browser extension that evaluates the credibility of online news articles using a machine learning API and provides instant feedback indicators.',
-    image: 'https://images.unsplash.com/photo-1526378722478-ccf3dd4b362b?w=600&h=400&fit=crop',
-    tags: ['React', 'Machine Learning API', 'Chrome Extension', 'AI', 'Web Security'],
-    githubUrl: 'https://github.com/murarii07/chromeExtension',
-    features: [
-      'Real-time credibility scoring of news content',
-      'Intuitive color-coded indicator system',
-      'Lightweight and fast Chrome extension architecture',
-      'Seamless ML API integration',
-      'Enhances digital media literacy'
-    ]
-  }
-];
+  const experiences: Experience[] = [
+    {
+      role: 'Back End Developer',
+      company: 'BayNine Ventures',
+      period: 'Nov 2025 – Present',
+      note: 'Intern from Nov 2025 to Feb 2026, full-time since Feb 2026',
+      points: [
+        'Own the backend end to end, from API design and business logic to the data layer, deployment and maintenance.',
+        'Ship containerized services with Docker on AWS, with GitHub Actions CI/CD pipelines handling builds and releases.',
+        'Designed the multi-tenant PostgreSQL schema so each tenant\'s data stays isolated while the system scales cleanly.',
+        'Build REST and GraphQL APIs with FastAPI and Django, plus custom Frappe modules that support enterprise workflows.',
+        'Tune authentication flows and slow database queries to keep API responses fast.'
+      ],
+      tags: ['Python', 'FastAPI', 'Django', 'GraphQL', 'PostgreSQL', 'Frappe', 'AWS', 'Docker']
+    },
+    {
+      role: 'Full Stack Developer',
+      company: 'Metaminds Studio',
+      period: 'Aug 2025 – Oct 2025',
+      points: [
+        'Built features across the stack with Next.js, NestJS and Strapi, including REST APIs and authentication improvements.',
+        'Helped build CI/CD pipelines and supported cloud integration and the production rollout on Azure.'
+      ],
+      tags: ['Next.js', 'NestJS', 'Strapi', 'Azure', 'CI/CD']
+    },
+    {
+      role: 'Cloud Operations Assistant (Part-time)',
+      company: 'U J Software & Solutions',
+      period: 'May 2025 – Jul 2025',
+      points: [
+        'Managed cloud user access and handled monitoring and reporting to keep day-to-day operations running smoothly.'
+      ],
+      tags: ['Cloud Operations', 'Monitoring', 'Reporting']
+    }
+  ];
 
-const achievements: Achievement[] = [
-  {
-    title: 'Inter-College Hackathon Finalist 2025',
-    description: 'Developed a prototype browser extension for fake news detection using machine learning APIs, achieving finalist recognition.',
-    year: '2025'
-  },
-  {
-    title: 'Smart India Hackathon 2024',
-    description: 'Participated in India’s national innovation challenge, contributing to collaborative problem-solving and creative tech solutions.',
-    year: '2024'
-  },
-  {
-    title: 'Microsoft Azure Fundamentals (AZ-900)',
-    description: 'Certified in Azure fundamentals, with a solid grasp of cloud architecture, services, and deployment workflows.',
-    year: '2024'
-  }
-];
+  const projects: Project[] = [
+    {
+      title: 'Excel-to-Form Conversion',
+      description: 'Web application that converts Excel data into dynamic, interactive web forms, improving data collection efficiency by 40% through automation.',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
+      tags: ['Next.js', 'Azure', 'Vercel', 'Blob Storage', 'CI/CD'],
+      githubUrl: 'https://github.com/murarii07/excel-to-form',
+      features: [
+        'Dynamic form generation from Excel sheets',
+        'Azure Blob Storage integration',
+        'Secure backend APIs',
+        'Frontend deployed on Vercel, backend on Azure',
+        'Automated CI/CD deployments'
+      ],
+      liveUrl: 'https://excel-to-form.vercel.app/'
+    },
+    {
+      title: 'Vocal Separator',
+      description: 'Web app built on the Music.ai API that lets users upload a track and get clean, isolated vocals back for production and remixing.',
+      image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop',
+      tags: ['Python', 'Music.ai API', 'Azure', 'Audio Processing'],
+      githubUrl: 'https://github.com/murarii07/Vocal_Separation_From_Music',
+      features: [
+        'AI-based vocal extraction through the Music.ai API',
+        'File upload and download interface',
+        'Optimized processing pipeline',
+        'Azure cloud hosting',
+        'Multi-format audio support'
+      ]
+    },
+    {
+      title: 'Fake News Detection Chrome Extension',
+      description: 'Browser extension that rates the credibility of news articles through an ML-based API and shows the result with a simple visual indicator. Reached the finals of the Inter-College Hackathon 2025.',
+      image: 'https://images.unsplash.com/photo-1526378722478-ccf3dd4b362b?w=600&h=400&fit=crop',
+      tags: ['React', 'Machine Learning API', 'Chrome Extension', 'AI'],
+      githubUrl: 'https://github.com/murarii07/chromeExtension',
+      features: [
+        'Real-time credibility scoring of news content',
+        'Color-coded indicator system',
+        'Lightweight Chrome extension architecture',
+        'ML API integration',
+        'Promotes digital media literacy'
+      ]
+    }
+  ];
 
+  const achievements: Achievement[] = [
+    {
+      title: 'Inter-College Hackathon Finalist 2025',
+      description: 'Helped build a browser-based fake news detection prototype that scores credibility with machine learning APIs, and reached the finals.',
+      year: '2025'
+    },
+    {
+      title: 'Smart India Hackathon 2024',
+      description: 'Participated in India\'s national innovation challenge, working in a team on creative, practical tech solutions.',
+      year: '2024'
+    },
+    {
+      title: 'Microsoft Azure Fundamentals (AZ-900)',
+      description: 'Certified in Azure fundamentals, covering cloud concepts, core services and deployment workflows.',
+      year: '2024'
+    }
+  ];
 
   const handleNavClick = (href: string): void => {
     const element = document.querySelector(href);
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleButtonClick = (action: string): void => {
-    console.log(`${action} button clicked`);
-    if (action === 'GitHub') {
-      window.open('https://github.com/murarii07', '_blank');
-    } else if (action === 'LinkedIn') {
-      window.open('https://www.linkedin.com/in/abhay-j-6b6ab325a/', '_blank');
-    } else if (action === 'Email') {
-      window.open('mailto:abhayaj07@gmail.com', '_blank');
-    }
-  };
+  const navItems: { label: string; href: string }[] = [
+    { label: 'Home', href: '#home' },
+    { label: 'About', href: '#about' },
+    { label: 'Experience', href: '#experience' },
+    { label: 'Skills', href: '#skills' },
+    { label: 'Projects', href: '#projects' },
+    { label: 'Achievements', href: '#achievements' },
+    { label: 'Contact', href: '#contact' }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden">
@@ -141,12 +190,15 @@ const achievements: Achievement[] = [
             Abhay Jaiswal
           </div>
           <div className="hidden md:flex space-x-8">
-            <button onClick={() => handleNavClick('#home')} className="hover:text-gray-300 transition-colors">Home</button>
-            <button onClick={() => handleNavClick('#about')} className="hover:text-gray-300 transition-colors">About</button>
-            <button onClick={() => handleNavClick('#skills')} className="hover:text-gray-300 transition-colors">Skills</button>
-            <button onClick={() => handleNavClick('#projects')} className="hover:text-gray-300 transition-colors">Projects</button>
-            <button onClick={() => handleNavClick('#achievements')} className="hover:text-gray-300 transition-colors">Achievements</button>
-            <button onClick={() => handleNavClick('#contact')} className="hover:text-gray-300 transition-colors">Contact</button>
+            {navItems.map((item) => (
+              <button
+                key={item.href}
+                onClick={() => handleNavClick(item.href)}
+                className="hover:text-gray-300 transition-colors"
+              >
+                {item.label}
+              </button>
+            ))}
           </div>
         </div>
       </nav>
@@ -174,21 +226,21 @@ const achievements: Achievement[] = [
             </div>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-blue-300 to-cyan-400 bg-clip-text text-transparent animate-pulse">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-blue-300 to-cyan-400 bg-clip-text text-transparent">
             Abhay Jaiswal
           </h1>
 
           <div className="text-xl md:text-2xl mb-8 text-gray-300">
-            <span className="inline-block">Aspiring Software Developer & </span>
+            <span className="inline-block">Back End Developer &amp; </span>
             <span className="inline-block bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent font-semibold">
-              Cloud Enthusiast
+              Cloud &amp; DevOps Builder
             </span>
           </div>
 
           <p className="text-lg md:text-xl mb-12 text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Passionate software developer with expertise in Python, Azure, and modern web technologies.
-            Building innovative solutions that bridge creativity with cutting-edge technology,
-            specializing in cloud computing and full-stack development.
+            Back End Developer at BayNine Ventures who owns the backend end to end, from API design and
+            a multi-tenant PostgreSQL schema to Dockerized deployments on AWS with CI/CD. Building toward
+            DevOps, MLOps and AI engineering.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -202,7 +254,7 @@ const achievements: Achievement[] = [
               </span>
             </button>
             <button
-              onClick={() => window.open('mailto:abhayaj07@gmail.com', '_blank')}
+              onClick={() => window.open(`mailto:${EMAIL}`, '_blank')}
               className="px-8 py-4 border-2 border-white/20 rounded-full font-semibold hover:bg-white/10 hover:scale-105 transform transition-all duration-300 backdrop-blur-sm"
             >
               Get In Touch
@@ -211,23 +263,26 @@ const achievements: Achievement[] = [
 
           <div className="flex justify-center space-x-6">
             <a
-              href="https://github.com/murarii07"
+              href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="GitHub"
               className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 hover:scale-110 transform transition-all duration-300 backdrop-blur-sm"
             >
               <Github className="w-6 h-6" />
             </a>
             <a
-              href="https://www.linkedin.com/in/abhay-j-6b6ab325a/"
+              href={LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="LinkedIn"
               className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 hover:scale-110 transform transition-all duration-300 backdrop-blur-sm"
             >
               <Linkedin className="w-6 h-6" />
             </a>
             <a
-              href="mailto:abhayaj07@gmail.com"
+              href={`mailto:${EMAIL}`}
+              aria-label="Email"
               className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 hover:scale-110 transform transition-all duration-300 backdrop-blur-sm"
             >
               <Mail className="w-6 h-6" />
@@ -255,9 +310,10 @@ const achievements: Achievement[] = [
             </h2>
             <div className="max-w-4xl mx-auto">
               <p className="text-xl text-gray-400 mb-8 leading-relaxed">
-                I'm currently pursuing my Bachelor of Science in Information Technology at Mulund College of Commerce,
-                maintaining a strong GPA of 8.0. My journey in technology is driven by curiosity and a passion for
-                solving real-world problems through innovative software solutions.
+                I turn business requirements into clean, reliable backend services. I graduated with a
+                B.Sc. in Information Technology from Mulund College of Commerce and now work on
+                multi-tenant systems, APIs and cloud deployments. I am growing toward MLOps and AI
+                engineering, with a focus on shipping software that is tested, measurable and dependable.
               </p>
               <div className="grid md:grid-cols-2 gap-8 text-left">
                 <div className="bg-white/5 rounded-xl p-6 backdrop-blur-sm border border-white/10">
@@ -274,13 +330,73 @@ const achievements: Achievement[] = [
                   <h3 className="text-xl font-semibold mb-4 text-cyan-400">Interests</h3>
                   <div className="space-y-2 text-gray-300">
                     <p>🎵 Playing the Flute</p>
-                    <p>☁️ Cloud Computing</p>
-                    <p>🤖 Artificial Intelligence</p>
-                    <p>🎨 Creative Problem Solving</p>
+                    <p>☁️ Cloud Computing &amp; DevOps</p>
+                    <p>🤖 MLOps, LLM Apps &amp; AI Agents</p>
+                    <p>🧩 System Design &amp; Problem Solving</p>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Experience Section */}
+      <section id="experience" className="py-20 px-6 relative">
+        <div className="max-w-5xl mx-auto">
+          <div
+            id="experience-title"
+            data-animate
+            className={`text-center mb-16 transition-all duration-1000 ${isVisible['experience-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+              Experience
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Hands-on work across backend systems, cloud deployment and full-stack development
+            </p>
+          </div>
+
+          <div className="space-y-8">
+            {experiences.map((exp: Experience, index: number) => (
+              <div
+                key={`${exp.company}-${exp.role}`}
+                id={`experience-${index}`}
+                data-animate
+                className={`p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-700 ${isVisible[`experience-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                  }`}
+                style={{ transitionDelay: `${index * 200}ms` }}
+              >
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-4">
+                  <div>
+                    <h3 className="text-2xl font-bold text-white">{exp.role}</h3>
+                    <p className="text-lg text-blue-400">{exp.company}</p>
+                  </div>
+                  <div className="md:text-right">
+                    <p className="text-gray-300 font-medium">{exp.period}</p>
+                    {exp.note && <p className="text-sm text-gray-500">{exp.note}</p>}
+                  </div>
+                </div>
+
+                <ul className="list-disc pl-5 space-y-2 text-gray-400 leading-relaxed mb-6">
+                  {exp.points.map((point: string) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+
+                <div className="flex flex-wrap gap-2">
+                  {exp.tags.map((tag: string) => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1 text-sm rounded-full bg-white/10 border border-white/10 text-gray-300"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -298,7 +414,7 @@ const achievements: Achievement[] = [
               Technical Skills
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Proficient in modern technologies with hands-on experience in full-stack development and cloud computing
+              Backend, cloud and DevOps tools I use day to day, with a full-stack foundation
             </p>
           </div>
 
@@ -307,7 +423,6 @@ const achievements: Achievement[] = [
               const Icon = skill.icon;
               return (
                 <SkillCard skill={skill} index={index} isVisible={isVisible} Icon={Icon} key={skill.name} />
-
               );
             })}
           </div>
@@ -317,7 +432,6 @@ const achievements: Achievement[] = [
       {/* Projects Section */}
       <section id="projects" className="py-20 px-6 relative">
         <div className="max-w-7xl mx-auto">
-
           <div
             id="projects-title"
             data-animate
@@ -328,14 +442,13 @@ const achievements: Achievement[] = [
               Featured Projects
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Innovative solutions showcasing my expertise in web development, cloud computing, and AI integration
+              Projects that combine web development, cloud services and AI integration
             </p>
           </div>
 
           <div className="space-y-12">
             {projects.map((project: Project, index: number) => (
               <Card isVisible={isVisible} project={project} index={index} key={project.title} />
-
             ))}
           </div>
         </div>
@@ -351,10 +464,10 @@ const achievements: Achievement[] = [
               }`}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Achievements & Certifications
+              Achievements &amp; Certifications
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Recognition and certifications that validate my skills and dedication to continuous learning
+              Recognition and certifications that reflect my commitment to continuous learning
             </p>
           </div>
 
@@ -397,16 +510,16 @@ const achievements: Achievement[] = [
               }`}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Let's Connect
+              Let&apos;s Connect
             </h2>
             <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-              I'm always excited to collaborate on innovative projects and explore new opportunities.
-              Let's build something amazing together!
+              I am open to opportunities in backend, cloud and DevOps engineering, and always happy to
+              talk about interesting projects.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <a
-                href="mailto:abhayaj07@gmail.com"
+                href={`mailto:${EMAIL}`}
                 className="group px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-full font-semibold hover:scale-105 transform transition-all duration-300 shadow-2xl shadow-blue-500/20"
               >
                 <span className="flex items-center gap-2">
@@ -415,7 +528,7 @@ const achievements: Achievement[] = [
                 </span>
               </a>
               <a
-                href="https://www.linkedin.com/in/abhay-j-6b6ab325a/"
+                href={LINKEDIN_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-8 py-4 border-2 border-white/20 rounded-full font-semibold hover:bg-white/10 hover:scale-105 transform transition-all duration-300 backdrop-blur-sm"
@@ -425,7 +538,7 @@ const achievements: Achievement[] = [
             </div>
 
             <div className="text-gray-400">
-              <p className="mb-2">📧 abhayaj07@gmail.com</p>
+              <p className="mb-2">📧 {EMAIL}</p>
               <p>📍 Mumbai, India</p>
             </div>
           </div>
@@ -435,7 +548,7 @@ const achievements: Achievement[] = [
       {/* Footer */}
       <footer className="py-8 px-6 border-t border-white/10">
         <div className="max-w-7xl mx-auto text-center text-gray-400">
-          <p>&copy; 2024 Abhay Jaiswal. Built with React & Tailwind CSS.</p>
+          <p>&copy; {new Date().getFullYear()} Abhay Jaiswal. Built with Next.js &amp; Tailwind CSS.</p>
         </div>
       </footer>
     </div>
