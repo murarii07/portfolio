@@ -44,6 +44,24 @@ const MONO = 'font-[family-name:var(--font-mono)]';
 const reveal = (visible: boolean): string =>
   visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6';
 
+// Inline SVG logo (same artwork as the favicon, icon.svg)
+const Logo: React.FC<{ className?: string }> = ({ className }) => (
+  <svg
+    viewBox="0 0 64 64"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    role="img"
+    aria-label="AJ logo"
+  >
+    <rect width="64" height="64" rx="14" fill="#16140F" />
+    <path
+      fill="#F5F1E8"
+      d="M23.560836501901143 38.25551330798479H16.388212927756655L15.238403041825098 41.650190114068444H10.338022813688216L17.291634980988597 22.4319391634981H22.71216730038023L29.66577946768061 41.650190114068444H24.710646387832703ZM22.35627376425856 34.64182509505704 19.9745247148289 27.606083650190115 17.620152091254756 34.64182509505704Z M43.81939163498099 22.4319391634981V35.517870722433464Q43.81939163498099 38.55665399239544 42.10836501901141 40.199239543726236Q40.39733840304183 41.84182509505704 37.49543726235742 41.84182509505704Q34.45665399239544 41.84182509505704 32.622433460076046 40.1171102661597Q30.788212927756657 38.39239543726236 30.788212927756657 35.21673003802282H35.44220532319392Q35.44220532319392 36.4212927756654 35.93498098859315 37.03726235741445Q36.4277566539924 37.653231939163504 37.35855513307985 37.653231939163504Q38.20722433460077 37.653231939163504 38.672623574144495 37.10570342205324Q39.13802281368822 36.558174904942966 39.13802281368822 35.517870722433464V22.4319391634981Z"
+    />
+    <circle cx="50.90" cy="38.45" r="3.2" fill="#C8461B" />
+  </svg>
+);
+
 const SectionHeader: React.FC<{
   id: string; num: string; label: string; title: string; subtitle?: string; visible: boolean;
 }> = ({ id, num, label, title, subtitle, visible }) => (
@@ -202,8 +220,9 @@ const HomePage: React.FC = () => {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <button
             onClick={() => handleNavClick('#home')}
-            className={`${DISPLAY} text-xl font-semibold tracking-tight`}
+            className={`${DISPLAY} inline-flex items-center gap-3 text-xl font-semibold tracking-tight`}
           >
+            <Logo className="h-9 w-9" />
             Abhay Jaiswal
           </button>
           <div className="hidden items-center gap-8 md:flex">
