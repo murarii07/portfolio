@@ -1,5 +1,5 @@
 import React from 'react';
-import { Github,ExternalLink } from 'lucide-react';
+import { Github, ExternalLink } from 'lucide-react';
 import { Project, VisibilityState } from '../state.types';
 
 export default function Card({
@@ -9,105 +9,82 @@ export default function Card({
     index: number,
     isVisible: VisibilityState
 }) {
-
+    const flip = index % 2 === 1;
 
     return (
-        <div
-            key={project.title}
+        <article
             id={`project-${index}`}
             data-animate
-            className={`group transition-all duration-1000 ${isVisible[`project-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            className={`group transition-all duration-1000 ${isVisible[`project-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
                 }`}
-            style={{ transitionDelay: `${index * 200}ms` }}
+            style={{ transitionDelay: `${index * 150}ms` }}
         >
-            <div className={`grid md:grid-cols-2 gap-8 items-center ${index % 2 === 1 ? 'md:grid-flow-col-dense' : ''
-                }`}>
-                <div className={`${index % 2 === 1 ? 'md:col-start-2' : ''}`}>
-                    <div className="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-500">
+            <div className="grid items-start gap-10 lg:grid-cols-12">
+                <div className={`lg:col-span-6 ${flip ? 'lg:order-2' : ''}`}>
+                    <div className="relative overflow-hidden rounded-lg border border-[#DDD6C6] bg-[#E9E3D3]">
                         <img
                             src={project.image}
                             alt={project.title}
-                            className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
+                            className="h-72 w-full object-cover grayscale transition duration-500 group-hover:scale-105 group-hover:grayscale-0"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                        <div className="absolute top-4 right-4 flex gap-2">
-                            <a
-                                href={project.githubUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center hover:bg-black/80 transition-colors"
-                            >
-                                <Github className="w-5 h-5 text-white" />
-                            </a>
-                            {project.liveUrl && (
-                                <a
-                                    href={project.liveUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center hover:bg-black/80 transition-colors"
-                                >
-                                    <ExternalLink className="w-5 h-5 text-white" />
-                                </a>
-                            )}
-                        </div>
+                        <span className="absolute left-4 top-4 rounded bg-[#F5F1E8] px-2.5 py-1 font-[family-name:var(--font-mono)] text-xs tracking-widest text-[#16140F]">
+                            {String(index + 1).padStart(2, '0')}
+                        </span>
                     </div>
                 </div>
 
-                <div className={`${index % 2 === 1 ? 'md:col-start-1 md:row-start-1' : ''}`}>
-                    <h3 className="text-3xl font-bold mb-4 text-white group-hover:text-blue-300 transition-colors">
+                <div className={`lg:col-span-6 ${flip ? 'lg:order-1' : ''}`}>
+                    <h3 className="font-[family-name:var(--font-display)] text-3xl leading-tight tracking-tight text-[#16140F] md:text-4xl">
                         {project.title}
                     </h3>
-                    <p className="text-gray-400 mb-6 leading-relaxed text-lg">
+                    <p className="mt-4 text-lg leading-relaxed text-[#6B655A]">
                         {project.description}
                     </p>
 
-                    <div className="mb-6">
-                        <h4 className="text-lg font-semibold mb-3 text-cyan-400">Key Features:</h4>
-                        <ul className="space-y-2">
-                            {project.features.map((feature, featureIndex) => (
-                                <li key={featureIndex} className="text-gray-300 flex items-start gap-2">
-                                    <span className="text-cyan-400 mt-1">•</span>
-                                    {feature}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                    <ul className="mt-6 space-y-2">
+                        {project.features.map((feature, featureIndex) => (
+                            <li key={featureIndex} className="flex items-start gap-3 text-[#3A362E]">
+                                <span className="mt-2.5 h-px w-4 shrink-0 bg-[#C8461B]" />
+                                {feature}
+                            </li>
+                        ))}
+                    </ul>
 
-                    <div className="flex flex-wrap gap-2 mb-6">
+                    <div className="mt-6 flex flex-wrap gap-2">
                         {project.tags.map((tag: string) => (
                             <span
                                 key={tag}
-                                className="px-3 py-1 text-sm font-medium bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-300 rounded-full backdrop-blur-sm border border-blue-500/30"
+                                className="rounded border border-[#DDD6C6] bg-[#FBF8F1] px-2.5 py-1 font-[family-name:var(--font-mono)] text-xs text-[#6B655A]"
                             >
                                 {tag}
                             </span>
                         ))}
                     </div>
 
-                    <div className="flex gap-4">
+                    <div className="mt-8 flex flex-wrap gap-3">
                         <a
                             href={project.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-600 text-white rounded-full font-medium hover:scale-105 transform transition-all duration-300 flex items-center gap-2"
+                            className="inline-flex items-center gap-2 rounded-full border border-[#16140F] px-5 py-2.5 text-sm font-medium text-[#16140F] transition-colors hover:bg-[#16140F] hover:text-[#F5F1E8]"
                         >
-                            <Github className="w-4 h-4" />
-                            View Code
+                            <Github className="h-4 w-4" />
+                            View code
                         </a>
                         {project.liveUrl && (
                             <a
                                 href={project.liveUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-full font-medium hover:scale-105 transform transition-all duration-300 flex items-center gap-2"
+                                className="inline-flex items-center gap-2 rounded-full bg-[#C8461B] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#16140F]"
                             >
-                                <ExternalLink className="w-4 h-4" />
-                                Live Demo
+                                <ExternalLink className="h-4 w-4" />
+                                Live demo
                             </a>
                         )}
                     </div>
                 </div>
             </div>
-        </div>
+        </article>
     )
 }
