@@ -1,11 +1,11 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, Github, Linkedin, Mail, Code, ArrowRight, Cloud, Database, Server, GitBranch } from 'lucide-react';
+import { Github, Linkedin, Mail, Code, ArrowRight, Cloud, Database, Server, GitBranch, Menu, X } from 'lucide-react';
 import Card from './Components/Card';
 import { Achievement, Project, Skill, VisibilityState } from './state.types';
 import SkillCard from './Components/Skills';
 
-// Local type for the new Experience section (keeps state.types.ts untouched)
+// Local type for the Experience section (keeps state.types.ts untouched)
 interface Experience {
   role: string;
   company: string;
@@ -16,20 +16,30 @@ interface Experience {
 }
 
 const GITHUB_URL = 'https://github.com/murarii07';
-// NOTE: this matches the LinkedIn URL on your profile. Your old portfolio used a different one,
-// so open this link once and confirm it is the profile you want to share.
 const LINKEDIN_URL = 'https://www.linkedin.com/in/abhayjaiswal007';
 const EMAIL = 'abhayaj07@gmail.com';
 
-const HomePage: React.FC = () => {
-  const [scrollY, setScrollY] = useState<number>(0);
-  const [isVisible, setIsVisible] = useState<VisibilityState>({});
+// Theme: warm paper, ink text, one accent colour. Fonts come from layout.tsx.
+const DISPLAY = 'font-[family-name:var(--font-display)]';
+const MONO = 'font-[family-name:var(--font-mono)]';
+const reveal = (visible: boolean): string =>
+  visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6';
 
-  useEffect(() => {
-    const handleScroll = (): void => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+const SectionHeader: React.FC<{
+  id: string; num: string; label: string; title: string; subtitle?: string; visible: boolean;
+}> = ({ id, num, label, title, subtitle, visible }) => (
+  <div id={id} data-animate className={`mb-14 transition-all duration-700 ${reveal(visible)}`}>
+    <p className={`${MONO} mb-4 text-xs uppercase tracking-[0.2em] text-[#C8461B]`}>
+      {num} — {label}
+    </p>
+    <h2 className={`${DISPLAY} text-4xl leading-tight tracking-tight text-[#16140F] md:text-5xl`}>{title}</h2>
+    {subtitle && <p className="mt-4 max-w-2xl text-lg text-[#6B655A]">{subtitle}</p>}
+  </div>
+);
+
+const HomePage: React.FC = () => {
+  const [isVisible, setIsVisible] = useState<VisibilityState>({});
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -71,7 +81,7 @@ const HomePage: React.FC = () => {
       role: 'Back End Developer',
       company: 'BayNine Ventures',
       period: 'Nov 2025 – Present',
-      note: 'Intern from Nov 2025 to Feb 2026, full-time since Feb 2026',
+      note: 'Intern until Feb 2026, full-time since',
       points: [
         'Own the backend end to end, from API design and business logic to the data layer, deployment and maintenance.',
         'Ship containerized services with Docker on AWS, with GitHub Actions CI/CD pipelines handling builds and releases.',
@@ -167,12 +177,12 @@ const HomePage: React.FC = () => {
   ];
 
   const handleNavClick = (href: string): void => {
+    setMenuOpen(false);
     const element = document.querySelector(href);
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const navItems: { label: string; href: string }[] = [
-    { label: 'Home', href: '#home' },
     { label: 'About', href: '#about' },
     { label: 'Experience', href: '#experience' },
     { label: 'Skills', href: '#skills' },
@@ -182,159 +192,157 @@ const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden">
+    <div className="min-h-screen overflow-x-hidden bg-[#F5F1E8] text-[#16140F]">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 px-6 py-4 backdrop-blur-md bg-black/20 border-b border-white/10">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="text-2xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+      <nav className="fixed inset-x-0 top-0 z-50 border-b border-[#DDD6C6] bg-[#F5F1E8]/85 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+          <button
+            onClick={() => handleNavClick('#home')}
+            className={`${DISPLAY} text-xl font-semibold tracking-tight`}
+          >
             Abhay Jaiswal
-          </div>
-          <div className="hidden md:flex space-x-8">
+          </button>
+          <div className="hidden items-center gap-8 md:flex">
             {navItems.map((item) => (
               <button
                 key={item.href}
                 onClick={() => handleNavClick(item.href)}
-                className="hover:text-gray-300 transition-colors"
+                className={`${MONO} text-xs uppercase tracking-widest text-[#6B655A] transition-colors hover:text-[#C8461B]`}
               >
                 {item.label}
               </button>
             ))}
           </div>
+          <button
+            className="md:hidden"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
+        {menuOpen && (
+          <div className="flex flex-col gap-5 border-t border-[#DDD6C6] bg-[#F5F1E8] px-6 py-6 md:hidden">
+            {navItems.map((item) => (
+              <button
+                key={item.href}
+                onClick={() => handleNavClick(item.href)}
+                className={`${MONO} text-left text-sm uppercase tracking-widest text-[#3A362E]`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="relative min-h-screen flex items-center justify-center px-6">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div
-            className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-pulse"
-            style={{ transform: `translateY(${scrollY * 0.5}px)` }}
-          />
-          <div
-            className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-400/20 rounded-full blur-3xl animate-pulse delay-1000"
-            style={{ transform: `translateY(${scrollY * -0.3}px)` }}
-          />
-        </div>
-
-        <div className="relative z-10 text-center max-w-4xl mx-auto mt-6">
-          <div className="mb-6 mt-12">
-            <div className="w-32 h-32 mx-auto mb-8 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 p-1">
-              <div className="w-full h-full rounded-full bg-black flex items-center justify-center text-4xl font-bold text-white">
-                AJ
-              </div>
-            </div>
-          </div>
-
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-blue-300 to-cyan-400 bg-clip-text text-transparent">
-            Abhay Jaiswal
+      <section id="home" className="relative overflow-hidden px-6 pb-24 pt-36 md:pb-36 md:pt-48">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 opacity-70"
+          style={{
+            backgroundImage: 'radial-gradient(#16140F26 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+            maskImage: 'linear-gradient(to bottom, black 35%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 35%, transparent)'
+          }}
+        />
+        <div className="relative mx-auto max-w-6xl">
+          <p className={`${MONO} mb-8 text-xs uppercase tracking-[0.2em] text-[#6B655A]`}>
+            Back End Developer · BayNine Ventures · Mumbai, India
+          </p>
+          <h1 className={`${DISPLAY} text-6xl font-medium leading-[0.92] tracking-tight sm:text-7xl md:text-9xl`}>
+            Abhay<br />Jaiswal<span className="text-[#C8461B]">.</span>
           </h1>
-
-          <div className="text-xl md:text-2xl mb-8 text-gray-300">
-            <span className="inline-block">Back End Developer &amp; </span>
-            <span className="inline-block bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent font-semibold">
-              Cloud &amp; DevOps Builder
-            </span>
-          </div>
-
-          <p className="text-lg md:text-xl mb-12 text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Back End Developer at BayNine Ventures who owns the backend end to end, from API design and
-            a multi-tenant PostgreSQL schema to Dockerized deployments on AWS with CI/CD. Building toward
-            DevOps, MLOps and AI engineering.
+          <p className={`${DISPLAY} mt-10 max-w-3xl text-2xl leading-snug text-[#3A362E] md:text-4xl`}>
+            I build <em className="text-[#C8461B]">reliable APIs</em> and cloud deployments for enterprise applications.
+          </p>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#6B655A]">
+            I own the backend end to end, from API design and a multi-tenant PostgreSQL schema to
+            Dockerized deployments on AWS with CI/CD. Building toward DevOps, MLOps and AI engineering.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <div className="mt-12 flex flex-col gap-4 sm:flex-row">
             <button
               onClick={() => handleNavClick('#projects')}
-              className="group px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-full font-semibold hover:scale-105 transform transition-all duration-300 shadow-2xl shadow-blue-500/20"
+              className="group inline-flex items-center justify-center gap-2 rounded-full bg-[#16140F] px-7 py-3.5 font-medium text-[#F5F1E8] transition-colors hover:bg-[#C8461B]"
             >
-              <span className="flex items-center gap-2">
-                View My Projects
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </span>
+              View my projects
+              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </button>
-            <button
-              onClick={() => window.open(`mailto:${EMAIL}`, '_blank')}
-              className="px-8 py-4 border-2 border-white/20 rounded-full font-semibold hover:bg-white/10 hover:scale-105 transform transition-all duration-300 backdrop-blur-sm"
+            <a
+              href={`mailto:${EMAIL}`}
+              className="inline-flex items-center justify-center rounded-full border border-[#16140F] px-7 py-3.5 font-medium transition-colors hover:bg-[#16140F] hover:text-[#F5F1E8]"
             >
-              Get In Touch
-            </button>
+              Get in touch
+            </a>
           </div>
 
-          <div className="flex justify-center space-x-6">
+          <div className="mt-10 flex flex-wrap gap-6">
             <a
               href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="GitHub"
-              className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 hover:scale-110 transform transition-all duration-300 backdrop-blur-sm"
+              className={`${MONO} inline-flex items-center gap-2 text-sm text-[#6B655A] transition-colors hover:text-[#C8461B]`}
             >
-              <Github className="w-6 h-6" />
+              <Github className="h-4 w-4" /> GitHub
             </a>
             <a
               href={LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 hover:scale-110 transform transition-all duration-300 backdrop-blur-sm"
+              className={`${MONO} inline-flex items-center gap-2 text-sm text-[#6B655A] transition-colors hover:text-[#C8461B]`}
             >
-              <Linkedin className="w-6 h-6" />
+              <Linkedin className="h-4 w-4" /> LinkedIn
             </a>
             <a
               href={`mailto:${EMAIL}`}
-              aria-label="Email"
-              className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 hover:scale-110 transform transition-all duration-300 backdrop-blur-sm"
+              className={`${MONO} inline-flex items-center gap-2 text-sm text-[#6B655A] transition-colors hover:text-[#C8461B]`}
             >
-              <Mail className="w-6 h-6" />
+              <Mail className="h-4 w-4" /> Email
             </a>
           </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ChevronDown className="w-8 h-8 text-white/60" />
         </div>
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 px-6 relative">
-        <div className="max-w-7xl mx-auto">
-          <div
+      <section id="about" className="border-t border-[#DDD6C6] px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeader
             id="about-title"
+            num="01"
+            label="About"
+            title="Reliable backends, built with care."
+            visible={!!isVisible['about-title']}
+          />
+          <div
+            id="about-body"
             data-animate
-            className={`text-center mb-16 transition-all duration-1000 ${isVisible['about-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
+            className={`grid gap-12 transition-all duration-700 lg:grid-cols-5 ${reveal(!!isVisible['about-body'])}`}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              About Me
-            </h2>
-            <div className="max-w-4xl mx-auto">
-              <p className="text-xl text-gray-400 mb-8 leading-relaxed">
-                I turn business requirements into clean, reliable backend services. I graduated with a
-                B.Sc. in Information Technology from Mulund College of Commerce and now work on
-                multi-tenant systems, APIs and cloud deployments. I am growing toward MLOps and AI
-                engineering, with a focus on shipping software that is tested, measurable and dependable.
-              </p>
-              <div className="grid md:grid-cols-2 gap-8 text-left">
-                <div className="bg-white/5 rounded-xl p-6 backdrop-blur-sm border border-white/10">
-                  <h3 className="text-xl font-semibold mb-4 text-blue-400">Education</h3>
-                  <div className="space-y-3 text-gray-300">
-                    <div>
-                      <p className="font-medium">B.Sc. Information Technology</p>
-                      <p className="text-sm text-gray-400">Mulund College of Commerce (2022-2025)</p>
-                      <p className="text-sm text-gray-400">GPA: 8.0/10</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white/5 rounded-xl p-6 backdrop-blur-sm border border-white/10">
-                  <h3 className="text-xl font-semibold mb-4 text-cyan-400">Interests</h3>
-                  <div className="space-y-2 text-gray-300">
-                    <p>🎵 Playing the Flute</p>
-                    <p>☁️ Cloud Computing &amp; DevOps</p>
-                    <p>🤖 MLOps, LLM Apps &amp; AI Agents</p>
-                    <p>🧩 System Design &amp; Problem Solving</p>
-                  </div>
-                </div>
+            <p className={`${DISPLAY} text-xl leading-relaxed text-[#3A362E] md:text-2xl lg:col-span-3`}>
+              I turn business requirements into clean, reliable backend services. I graduated with a
+              B.Sc. in Information Technology from Mulund College of Commerce and now work on
+              multi-tenant systems, APIs and cloud deployments. I am growing toward MLOps and AI
+              engineering, with a focus on shipping software that is tested, measurable and dependable.
+            </p>
+            <div className="space-y-10 lg:col-span-2">
+              <div>
+                <h3 className={`${MONO} mb-3 text-xs uppercase tracking-[0.2em] text-[#C8461B]`}>Education</h3>
+                <p className={`${DISPLAY} text-xl`}>B.Sc. Information Technology</p>
+                <p className="text-[#6B655A]">Mulund College of Commerce, 2022–2025</p>
+                <p className="text-[#6B655A]">GPA 8.0 / 10</p>
+              </div>
+              <div>
+                <h3 className={`${MONO} mb-3 text-xs uppercase tracking-[0.2em] text-[#C8461B]`}>Interests</h3>
+                <ul className="space-y-1 text-[#3A362E]">
+                  <li>Playing the flute</li>
+                  <li>Cloud computing &amp; DevOps</li>
+                  <li>MLOps, LLM apps &amp; AI agents</li>
+                  <li>System design &amp; problem solving</li>
+                </ul>
               </div>
             </div>
           </div>
@@ -342,58 +350,49 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="py-20 px-6 relative">
-        <div className="max-w-5xl mx-auto">
-          <div
+      <section id="experience" className="border-t border-[#DDD6C6] px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeader
             id="experience-title"
-            data-animate
-            className={`text-center mb-16 transition-all duration-1000 ${isVisible['experience-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Experience
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Hands-on work across backend systems, cloud deployment and full-stack development
-            </p>
-          </div>
-
-          <div className="space-y-8">
+            num="02"
+            label="Experience"
+            title="Where I have worked."
+            subtitle="Hands-on work across backend systems, cloud deployment and full-stack development."
+            visible={!!isVisible['experience-title']}
+          />
+          <div className="divide-y divide-[#DDD6C6] border-y border-[#DDD6C6]">
             {experiences.map((exp: Experience, index: number) => (
               <div
                 key={`${exp.company}-${exp.role}`}
                 id={`experience-${index}`}
                 data-animate
-                className={`p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-700 ${isVisible[`experience-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                  }`}
-                style={{ transitionDelay: `${index * 200}ms` }}
+                className={`grid gap-6 py-10 transition-all duration-700 md:grid-cols-12 ${reveal(!!isVisible[`experience-${index}`])}`}
               >
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-4">
-                  <div>
-                    <h3 className="text-2xl font-bold text-white">{exp.role}</h3>
-                    <p className="text-lg text-blue-400">{exp.company}</p>
-                  </div>
-                  <div className="md:text-right">
-                    <p className="text-gray-300 font-medium">{exp.period}</p>
-                    {exp.note && <p className="text-sm text-gray-500">{exp.note}</p>}
-                  </div>
+                <div className="md:col-span-3">
+                  <p className={`${MONO} text-sm text-[#3A362E]`}>{exp.period}</p>
+                  {exp.note && <p className="mt-1 text-sm text-[#6B655A]">{exp.note}</p>}
                 </div>
-
-                <ul className="list-disc pl-5 space-y-2 text-gray-400 leading-relaxed mb-6">
-                  {exp.points.map((point: string) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
-
-                <div className="flex flex-wrap gap-2">
-                  {exp.tags.map((tag: string) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 text-sm rounded-full bg-white/10 border border-white/10 text-gray-300"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                <div className="md:col-span-9">
+                  <h3 className={`${DISPLAY} text-2xl leading-tight md:text-3xl`}>{exp.role}</h3>
+                  <p className="mt-1 text-lg text-[#C8461B]">{exp.company}</p>
+                  <ul className="mt-5 space-y-2 text-[#3A362E]">
+                    {exp.points.map((point: string) => (
+                      <li key={point} className="flex items-start gap-3">
+                        <span className="mt-2.5 h-px w-4 shrink-0 bg-[#C8461B]" />
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {exp.tags.map((tag: string) => (
+                      <span
+                        key={tag}
+                        className={`${MONO} rounded border border-[#DDD6C6] bg-[#FBF8F1] px-2.5 py-1 text-xs text-[#6B655A]`}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}
@@ -402,23 +401,17 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-20 px-6 relative">
-        <div className="max-w-7xl mx-auto">
-          <div
+      <section id="skills" className="border-t border-[#DDD6C6] px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeader
             id="skills-title"
-            data-animate
-            className={`text-center mb-16 transition-all duration-1000 ${isVisible['skills-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Technical Skills
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Backend, cloud and DevOps tools I use day to day, with a full-stack foundation
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            num="03"
+            label="Skills"
+            title="What I work with."
+            subtitle="Backend, cloud and DevOps tools I use day to day, with a full-stack foundation."
+            visible={!!isVisible['skills-title']}
+          />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {skills.map((skill: Skill, index: number) => {
               const Icon = skill.icon;
               return (
@@ -430,23 +423,17 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 px-6 relative">
-        <div className="max-w-7xl mx-auto">
-          <div
+      <section id="projects" className="border-t border-[#DDD6C6] px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeader
             id="projects-title"
-            data-animate
-            className={`text-center mb-16 transition-all duration-1000 ${isVisible['projects-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Featured Projects
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Projects that combine web development, cloud services and AI integration
-            </p>
-          </div>
-
-          <div className="space-y-12">
+            num="04"
+            label="Projects"
+            title="Things I have built."
+            subtitle="Projects that combine web development, cloud services and AI integration."
+            visible={!!isVisible['projects-title']}
+          />
+          <div className="space-y-24">
             {projects.map((project: Project, index: number) => (
               <Card isVisible={isVisible} project={project} index={index} key={project.title} />
             ))}
@@ -455,44 +442,28 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Achievements Section */}
-      <section id="achievements" className="py-20 px-6 relative">
-        <div className="max-w-7xl mx-auto">
-          <div
+      <section id="achievements" className="border-t border-[#DDD6C6] px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeader
             id="achievements-title"
-            data-animate
-            className={`text-center mb-16 transition-all duration-1000 ${isVisible['achievements-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Achievements &amp; Certifications
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Recognition and certifications that reflect my commitment to continuous learning
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
+            num="05"
+            label="Achievements"
+            title="Recognition and certifications."
+            visible={!!isVisible['achievements-title']}
+          />
+          <div className="divide-y divide-[#DDD6C6] border-y border-[#DDD6C6]">
             {achievements.map((achievement: Achievement, index: number) => (
               <div
                 key={achievement.title}
                 id={`achievement-${index}`}
                 data-animate
-                className={`group p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-700 hover:scale-105 ${isVisible[`achievement-${index}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                  }`}
-                style={{ transitionDelay: `${index * 200}ms` }}
+                className={`grid gap-4 py-8 transition-all duration-700 md:grid-cols-12 ${reveal(!!isVisible[`achievement-${index}`])}`}
+                style={{ transitionDelay: `${index * 120}ms` }}
               >
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center text-2xl font-bold text-black">
-                    {achievement.year}
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 text-white group-hover:text-yellow-300 transition-colors">
-                      {achievement.title}
-                    </h3>
-                    <p className="text-gray-400 leading-relaxed">
-                      {achievement.description}
-                    </p>
-                  </div>
+                <p className={`${MONO} text-sm text-[#C8461B] md:col-span-2`}>{achievement.year}</p>
+                <div className="md:col-span-10">
+                  <h3 className={`${DISPLAY} text-xl leading-snug md:text-2xl`}>{achievement.title}</h3>
+                  <p className="mt-2 max-w-3xl leading-relaxed text-[#6B655A]">{achievement.description}</p>
                 </div>
               </div>
             ))}
@@ -501,53 +472,51 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 px-6 relative">
-        <div className="max-w-4xl mx-auto text-center">
+      <section id="contact" className="bg-[#16140F] px-6 py-28 text-[#F5F1E8]">
+        <div className="mx-auto max-w-6xl">
           <div
             id="contact-section"
             data-animate
-            className={`transition-all duration-1000 ${isVisible['contact-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
+            className={`transition-all duration-1000 ${reveal(!!isVisible['contact-section'])}`}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Let&apos;s Connect
+            <p className={`${MONO} mb-4 text-xs uppercase tracking-[0.2em] text-[#E07A52]`}>06 — Contact</p>
+            <h2 className={`${DISPLAY} text-5xl leading-[0.95] tracking-tight md:text-7xl`}>
+              Let&apos;s talk<span className="text-[#E07A52]">.</span>
             </h2>
-            <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-8 max-w-2xl text-lg leading-relaxed text-[#B9B2A2]">
               I am open to opportunities in backend, cloud and DevOps engineering, and always happy to
               talk about interesting projects.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <a
                 href={`mailto:${EMAIL}`}
-                className="group px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-full font-semibold hover:scale-105 transform transition-all duration-300 shadow-2xl shadow-blue-500/20"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#C8461B] px-7 py-3.5 font-medium text-white transition-colors hover:bg-[#E07A52]"
               >
-                <span className="flex items-center gap-2">
-                  Send Email
-                  <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                </span>
+                <Mail className="h-5 w-5" />
+                Send email
               </a>
               <a
                 href={LINKEDIN_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-8 py-4 border-2 border-white/20 rounded-full font-semibold hover:bg-white/10 hover:scale-105 transform transition-all duration-300 backdrop-blur-sm"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-[#F5F1E8]/40 px-7 py-3.5 font-medium transition-colors hover:bg-[#F5F1E8] hover:text-[#16140F]"
               >
+                <Linkedin className="h-5 w-5" />
                 Connect on LinkedIn
               </a>
             </div>
 
-            <div className="text-gray-400">
-              <p className="mb-2">📧 {EMAIL}</p>
-              <p>📍 Mumbai, India</p>
-            </div>
+            <p className={`${MONO} mt-10 text-sm text-[#B9B2A2]`}>
+              {EMAIL} · Mumbai, India
+            </p>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 border-t border-white/10">
-        <div className="max-w-7xl mx-auto text-center text-gray-400">
+      <footer className="border-t border-[#DDD6C6] px-6 py-8">
+        <div className={`${MONO} mx-auto max-w-6xl text-center text-xs text-[#6B655A]`}>
           <p>&copy; {new Date().getFullYear()} Abhay Jaiswal. Built with Next.js &amp; Tailwind CSS.</p>
         </div>
       </footer>
