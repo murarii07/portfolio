@@ -1,11 +1,9 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, Code, ArrowRight, Cloud, Database, Server, GitBranch, Menu, X } from 'lucide-react';
-import Card from './Components/Card';
-import { Achievement, Project, Skill, VisibilityState } from './state.types';
-import SkillCard from './Components/Skills';
+import { LucideIcon, Github, Linkedin, Mail, Code, ArrowRight, Cloud, Database, Server, ExternalLink, Menu, X } from 'lucide-react';
+import { VisibilityState } from './state.types';
 
-// Local type for the Experience section (keeps state.types.ts untouched)
+// ---------- Local types (page.tsx no longer needs Card.tsx or Skills.tsx) ----------
 interface Experience {
   role: string;
   company: string;
@@ -15,8 +13,29 @@ interface Experience {
   tags: string[];
 }
 
+interface SkillGroup {
+  title: string;
+  icon: LucideIcon;
+  items: string[];
+}
+
+interface ProjectItem {
+  title: string;
+  description: string;
+  tags: string[];
+  githubUrl: string;
+  liveUrl?: string;
+}
+
+interface Recognition {
+  label: string;
+  title: string;
+  description?: string;
+  extra?: string;
+}
+
 const GITHUB_URL = 'https://github.com/murarii07';
-const LINKEDIN_URL = 'https://www.linkedin.com/in/abhay-jaiswal007/';
+const LINKEDIN_URL = 'https://www.linkedin.com/in/abhayjaiswal007';
 const EMAIL = 'abhayaj07@gmail.com';
 
 // Theme: warm paper, ink text, one accent colour. Fonts come from layout.tsx.
@@ -60,20 +79,28 @@ const HomePage: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Skill levels are self-ratings. Adjust them to what you can confidently defend in an interview.
-  const skills: Skill[] = [
-    { name: 'Python', icon: Code, color: 'from-yellow-400 to-yellow-600', level: 'Proficient' },
-    { name: 'FastAPI', icon: Server, color: 'from-teal-400 to-teal-600', level: 'Proficient' },
-    { name: 'Django', icon: Server, color: 'from-emerald-400 to-emerald-600', level: 'Proficient' },
-    { name: 'PostgreSQL (Multi-tenant Design)', icon: Database, color: 'from-purple-400 to-purple-600', level: 'Proficient' },
-    { name: 'GraphQL & REST APIs', icon: Server, color: 'from-pink-400 to-pink-600', level: 'Proficient' },
-    { name: 'AWS', icon: Cloud, color: 'from-orange-400 to-orange-600', level: 'Proficient' },
-    { name: 'Docker', icon: Code, color: 'from-blue-400 to-blue-600', level: 'Proficient' },
-    { name: 'CI/CD (GitHub Actions)', icon: GitBranch, color: 'from-gray-400 to-gray-600', level: 'Proficient' },
-    { name: 'Azure Cloud', icon: Cloud, color: 'from-blue-500 to-blue-700', level: 'Intermediate' },
-    { name: 'Next.js', icon: Code, color: 'from-slate-400 to-slate-600', level: 'Proficient' },
-    { name: 'React', icon: Code, color: 'from-cyan-400 to-cyan-600', level: 'Proficient' },
-    { name: 'TypeScript', icon: Code, color: 'from-indigo-400 to-indigo-600', level: 'Intermediate' }
+  // Skills grouped by category, with no self-rated levels.
+  const skillGroups: SkillGroup[] = [
+    {
+      title: 'Backend',
+      icon: Server,
+      items: ['Python', 'FastAPI', 'Django', 'Frappe', 'GraphQL', 'REST APIs', 'NestJS', 'Node.js']
+    },
+    {
+      title: 'Cloud & DevOps',
+      icon: Cloud,
+      items: ['AWS', 'Docker', 'CI/CD (GitHub Actions)', 'Azure', 'Kubernetes (local practice)', 'Git & GitHub']
+    },
+    {
+      title: 'Databases',
+      icon: Database,
+      items: ['PostgreSQL (multi-tenant design)', 'MongoDB']
+    },
+    {
+      title: 'Frontend',
+      icon: Code,
+      items: ['Next.js', 'React', 'TypeScript', 'TailwindCSS', 'HTML']
+    }
   ];
 
   const experiences: Experience[] = [
@@ -112,67 +139,44 @@ const HomePage: React.FC = () => {
     }
   ];
 
-  const projects: Project[] = [
+  const projects: ProjectItem[] = [
     {
       title: 'Excel-to-Form Conversion',
-      description: 'Web application that converts Excel data into dynamic, interactive web forms, improving data collection efficiency by 40% through automation.',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
-      tags: ['Next.js', 'Azure', 'Vercel', 'Blob Storage', 'CI/CD'],
+      description: 'Turns Excel data into dynamic web forms, improving data collection efficiency by 40%. The frontend runs on Vercel and the backend and Blob Storage on Azure, with automated CI/CD deployments.',
+      tags: ['Next.js', 'Azure', 'Blob Storage', 'CI/CD'],
       githubUrl: 'https://github.com/murarii07/excel-to-form',
-      features: [
-        'Dynamic form generation from Excel sheets',
-        'Azure Blob Storage integration',
-        'Secure backend APIs',
-        'Frontend deployed on Vercel, backend on Azure',
-        'Automated CI/CD deployments'
-      ],
       liveUrl: 'https://excel-to-form.vercel.app/'
     },
     {
       title: 'Vocal Separator',
-      description: 'Web app built on the Music.ai API that lets users upload a track and get clean, isolated vocals back for production and remixing.',
-      image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop',
-      tags: ['Python', 'Music.ai API', 'Azure', 'Audio Processing'],
-      githubUrl: 'https://github.com/murarii07/Vocal_Separation_From_Music',
-      features: [
-        'AI-based vocal extraction through the Music.ai API',
-        'File upload and download interface',
-        'Optimized processing pipeline',
-        'Azure cloud hosting',
-        'Multi-format audio support'
-      ]
+      description: 'Upload a track and get clean, isolated vocals back for remixing, using the Music.ai API for the AI-based separation.',
+      tags: ['Python', 'Music.ai API', 'Azure'],
+      githubUrl: 'https://github.com/murarii07/Vocal_Separation_From_Music'
     },
     {
       title: 'Fake News Detection Chrome Extension',
-      description: 'Browser extension that rates the credibility of news articles through an ML-based API and shows the result with a simple visual indicator. Reached the finals of the Inter-College Hackathon 2025.',
-      image: 'https://images.unsplash.com/photo-1526378722478-ccf3dd4b362b?w=600&h=400&fit=crop',
-      tags: ['React', 'Machine Learning API', 'Chrome Extension', 'AI'],
-      githubUrl: 'https://github.com/murarii07/chromeExtension',
-      features: [
-        'Real-time credibility scoring of news content',
-        'Color-coded indicator system',
-        'Lightweight Chrome extension architecture',
-        'ML API integration',
-        'Promotes digital media literacy'
-      ]
+      description: 'Rates a news article\'s credibility through an ML-based API and shows a simple visual indicator. Reached the finals of the Inter-College Hackathon 2025.',
+      tags: ['React', 'ML API', 'Chrome Extension'],
+      githubUrl: 'https://github.com/murarii07/chromeExtension'
+    },
+    {
+      title: 'Text-to-Image',
+      description: 'Generates images from text descriptions using AI.',
+      tags: ['AI', 'Image Generation'],
+      githubUrl: 'https://github.com/murarii07/Text-to-Image'
     }
   ];
 
-  const achievements: Achievement[] = [
+  const recognition: Recognition[] = [
     {
-      title: 'Inter-College Hackathon Finalist 2025',
-      description: 'Helped build a browser-based fake news detection prototype that scores credibility with machine learning APIs, and reached the finals.',
-      year: '2025'
+      label: 'Hackathons',
+      title: 'Finalist, Inter-College Hackathon 2025 · Participant, Smart India Hackathon 2024',
+      description: 'Helped build a browser-based fake news detection prototype that scores credibility with machine learning APIs, and reached the finals.'
     },
     {
-      title: 'Smart India Hackathon 2024',
-      description: 'Participated in India\'s national innovation challenge, working in a team on creative, practical tech solutions.',
-      year: '2024'
-    },
-    {
+      label: 'Certifications',
       title: 'Microsoft Azure Fundamentals (AZ-900)',
-      description: 'Certified in Azure fundamentals, covering cloud concepts, core services and deployment workflows.',
-      year: '2024'
+      extra: 'DevOps Fundamentals'
     }
   ];
 
@@ -260,8 +264,8 @@ const HomePage: React.FC = () => {
             I build <em className="text-[#C8461B]">reliable APIs</em> and cloud deployments for enterprise applications.
           </p>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#6B655A]">
-            I own the backend end to end, from API design and a multi-tenant PostgreSQL schema to
-            Dockerized deployments on AWS with CI/CD. Building toward DevOps, MLOps and AI engineering.
+            I own the backend end to end, from a multi-tenant PostgreSQL schema to Dockerized AWS
+            deployments, and I am building toward DevOps and MLOps.
           </p>
 
           <div className="mt-12 flex flex-col gap-4 sm:flex-row">
@@ -412,10 +416,29 @@ const HomePage: React.FC = () => {
             visible={!!isVisible['skills-title']}
           />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {skills.map((skill: Skill, index: number) => {
-              const Icon = skill.icon;
+            {skillGroups.map((group: SkillGroup, index: number) => {
+              const Icon = group.icon;
               return (
-                <SkillCard skill={skill} index={index} isVisible={isVisible} Icon={Icon} key={skill.name} />
+                <div
+                  key={group.title}
+                  id={`skill-group-${index}`}
+                  data-animate
+                  className={`rounded-lg border border-[#DDD6C6] bg-[#FBF8F1] p-6 transition-all duration-700 ${reveal(!!isVisible[`skill-group-${index}`])}`}
+                  style={{ transitionDelay: `${index * 100}ms` }}
+                >
+                  <div className="mb-5 flex items-center gap-3">
+                    <Icon className="h-5 w-5 text-[#C8461B]" />
+                    <h3 className={`${DISPLAY} text-xl`}>{group.title}</h3>
+                  </div>
+                  <ul className="space-y-2 text-[#3A362E]">
+                    {group.items.map((item: string) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <span className="mt-2.5 h-px w-3 shrink-0 bg-[#C8461B]" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               );
             })}
           </div>
@@ -433,9 +456,54 @@ const HomePage: React.FC = () => {
             subtitle="Projects that combine web development, cloud services and AI integration."
             visible={!!isVisible['projects-title']}
           />
-          <div className="space-y-24">
-            {projects.map((project: Project, index: number) => (
-              <Card isVisible={isVisible} project={project} index={index} key={project.title} />
+          <div className="divide-y divide-[#DDD6C6] border-y border-[#DDD6C6]">
+            {projects.map((project: ProjectItem, index: number) => (
+              <div
+                key={project.title}
+                id={`project-${index}`}
+                data-animate
+                className={`grid gap-6 py-10 transition-all duration-700 md:grid-cols-12 ${reveal(!!isVisible[`project-${index}`])}`}
+              >
+                <p className={`${MONO} text-sm text-[#C8461B] md:col-span-2`}>
+                  {String(index + 1).padStart(2, '0')}
+                </p>
+                <div className="md:col-span-10">
+                  <h3 className={`${DISPLAY} text-2xl leading-tight md:text-3xl`}>{project.title}</h3>
+                  <p className="mt-3 max-w-3xl text-lg leading-relaxed text-[#6B655A]">{project.description}</p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {project.tags.map((tag: string) => (
+                      <span
+                        key={tag}
+                        className={`${MONO} rounded border border-[#DDD6C6] bg-[#FBF8F1] px-2.5 py-1 text-xs text-[#6B655A]`}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-[#16140F] px-5 py-2.5 text-sm font-medium transition-colors hover:bg-[#16140F] hover:text-[#F5F1E8]"
+                    >
+                      <Github className="h-4 w-4" />
+                      View code
+                    </a>
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full bg-[#C8461B] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#16140F]"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        Live demo
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -452,18 +520,21 @@ const HomePage: React.FC = () => {
             visible={!!isVisible['achievements-title']}
           />
           <div className="divide-y divide-[#DDD6C6] border-y border-[#DDD6C6]">
-            {achievements.map((achievement: Achievement, index: number) => (
+            {recognition.map((item: Recognition, index: number) => (
               <div
-                key={achievement.title}
+                key={item.label}
                 id={`achievement-${index}`}
                 data-animate
                 className={`grid gap-4 py-8 transition-all duration-700 md:grid-cols-12 ${reveal(!!isVisible[`achievement-${index}`])}`}
                 style={{ transitionDelay: `${index * 120}ms` }}
               >
-                <p className={`${MONO} text-sm text-[#C8461B] md:col-span-2`}>{achievement.year}</p>
+                <p className={`${MONO} text-sm uppercase tracking-widest text-[#C8461B] md:col-span-2`}>{item.label}</p>
                 <div className="md:col-span-10">
-                  <h3 className={`${DISPLAY} text-xl leading-snug md:text-2xl`}>{achievement.title}</h3>
-                  <p className="mt-2 max-w-3xl leading-relaxed text-[#6B655A]">{achievement.description}</p>
+                  <h3 className={`${DISPLAY} text-xl leading-snug md:text-2xl`}>{item.title}</h3>
+                  {item.extra && <p className={`${DISPLAY} mt-1 text-xl leading-snug md:text-2xl`}>{item.extra}</p>}
+                  {item.description && (
+                    <p className="mt-2 max-w-3xl leading-relaxed text-[#6B655A]">{item.description}</p>
+                  )}
                 </div>
               </div>
             ))}
