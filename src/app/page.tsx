@@ -16,7 +16,7 @@ interface Experience {
 }
 
 const GITHUB_URL = 'https://github.com/murarii07';
-const LINKEDIN_URL = 'https://www.linkedin.com/in/abhayjaiswal007';
+const LINKEDIN_URL = 'https://www.linkedin.com/in/abhay-jaiswal007/';
 const EMAIL = 'abhayaj07@gmail.com';
 
 // Theme: warm paper, ink text, one accent colour. Fonts come from layout.tsx.
